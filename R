@@ -1,0 +1,105 @@
+ library(lubridate)
+> movies$release_date <- as.Date(movies$release_date, format = "%d/%m/%Y")
+> > # Çıkış tarihine göre film sayılarını hesapla
+> movie_counts <- movies %>%
++     mutate(year = lubridate::year(release_date)) %>%  # Yıl bilgisini çıkış tarihinden çıkar
++     group_by(year) %>%
++     summarise(movie_count = n())  # Her yıla ait film sayısını say
+> # Çubuk grafiğini çiz
+> ggplot(movie_counts, aes(x = year, y = movie_count)) +
++     geom_bar(stat = "identity", fill = "skyblue") +
++     labs(title = "Yıllara Göre Film Sayısı",
++          x = "Yıl",
++          y = "Film Sayısı") +
++     theme_minimal()
+> # Çubuk grafiğini çiz ve düzenle
+> ggplot(movie_counts, aes(x = year, y = movie_count)) +
++     geom_bar(stat = "identity", fill = "skyblue", color = "black") +
++     labs(title = "Yıllara Göre Film Sayısı",
++          x = "Yıl",
++          y = "Film Sayısı") +
++     theme_minimal() +
++     theme(
++         axis.text.x = element_text(angle = 45, hjust = 1),  # X ekseni etiketlerini döndür
++         plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),  # Başlık stilini ayarla
++         axis.title.x = element_text(size = 12, face = "bold"),  # X ekseni başlığını ayarla
++         axis.title.y = element_text(size = 12, face = "bold"),  # Y ekseni başlığını ayarla
++         axis.text = element_text(size = 10)  # Eksen etiketlerini ayarla
++     ) +
++     scale_x_continuous(breaks = seq(min(movie_counts$year), max(movie_counts$year), by = 2))  # X ekseni aralığını ayarla
+> movies$release_date <- as.Date(movies$release_date, format = "%d/%m/%Y")
+> # Dağılım grafiğini çiz ve düzenle
+> ggplot(movies, aes(x = popularity, y = vote_average)) +
++     geom_point(color = "blue", alpha = 0.5) +  # Noktaları çiz, mavi renkte ve yarı saydamlıkla
++     labs(title = "Popülarite ve Oy Ortalaması Arasındaki İlişki",
++          x = "Popülarite",
++          y = "Oy Ortalaması") +
++     theme_minimal() +
++     theme(
++         plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),  # Başlık stilini ayarla
++         axis.title.x = element_text(size = 12, face = "bold"),  # X ekseni başlığını ayarla
++         axis.title.y = element_text(size = 12, face = "bold"),  # Y ekseni başlığını ayarla
++         axis.text = element_text(size = 10)  # Eksen etiketlerini ayarla
++     )
+> # Yıl sütununu ekle
+> movies <- movies %>%
++     mutate(year = format(release_date, "%Y"))
+> yearly_popularity <- movies %>%
++     group_by(year) %>%
++     summarize(average_popularity = mean(popularity, na.rm = TRUE))
+> # Çizgi grafiğini çiz ve düzenle
+> ggplot(yearly_popularity, aes(x = as.integer(year), y = average_popularity)) +
++     geom_line(color = "blue", size = 1) +  # Çizgi, mavi renkte ve kalınlık 1
++     geom_point(color = "red", size = 2) +  # Noktalar, kırmızı renkte ve boyut 2
++     labs(title = "Yıllara Göre Ortalama Popülarite",
++          x = "Yıl",
++          y = "Ortalama Popülarite") +
++     theme_minimal() +
++     theme(
++         plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),  # Başlık stilini ayarla
++         axis.title.x = element_text(size = 12, face = "bold"),  # X ekseni başlığını ayarla
++         axis.title.y = element_text(size = 12, face = "bold"),  # Y ekseni başlığını ayarla
++         axis.text = element_text(size = 10)  # Eksen etiketlerini ayarla
++     )
+Warning message:
+Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+ℹ Please use `linewidth` instead.
+This warning is displayed once every 8 hours.
+Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated. 
+> # Yıllara göre ortalama oy sayısını hesapla
+> yearly_vote_count <- movies %>%
++     group_by(year) %>%
++     summarize(average_vote_count = mean(vote_count, na.rm = TRUE))
+> > # Çizgi grafiğini çiz ve düzenle
+> ggplot(yearly_vote_count, aes(x = as.integer(year), y = average_vote_count)) +
++     geom_line(color = "green", size = 1) +  # Çizgi, yeşil renkte ve kalınlık 1
++     geom_point(color = "purple", size = 2) +  # Noktalar, mor renkte ve boyut 2
++     labs(title = "Yıllara Göre Ortalama Oy Sayısı",
++          x = "Yıl",
++          y = "Ortalama Oy Sayısı") +
++     theme_minimal() +
++     theme(
++         plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),  # Başlık stilini ayarla
++         axis.title.x = element_text(size = 12, face = "bold"),  # X ekseni başlığını ayarla
++         axis.title.y = element_text(size = 12, face = "bold"),  # Y ekseni başlığını ayarla
++         axis.text = element_text(size = 10)  # Eksen etiketlerini ayarla
++     )
+> install.packages("lubridate")
+Error in install.packages : Updating loaded packages
+
+> # Çubuk grafiğini çiz ve düzenle
+> ggplot(movie_counts, aes(x = year, y = movie_count)) +
++     geom_bar(stat = "identity", fill = "skyblue", color = "black") +
++     labs(title = "Yıllara Göre Film Sayısı",
++          x = "Yıl",
++          y = "Film Sayısı") +
++     theme_minimal() +
++     theme(
++         axis.text.x = element_text(angle = 45, hjust = 1, size = 12),  # X ekseni etiketlerini döndür ve boyutunu ayarla
++         axis.text.y = element_text(size = 12),  # Y ekseni etiketlerinin boyutunu ayarla
++         plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),  # Başlık stilini ayarla
++         axis.title.x = element_text(size = 12, face = "bold"),  # X ekseni başlığını ayarla
++         axis.title.y = element_text(size = 12, face = "bold"),  # Y ekseni başlığını ayarla
++         axis.text = element_text(size = 10)  # Eksen etiketlerini ayarla
++     ) +
++     scale_x_continuous(breaks = seq(min(movie_counts$year), max(movie_counts$year), by = 2))  # X ekseni aralığını ayarla
